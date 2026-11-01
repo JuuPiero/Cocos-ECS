@@ -546,7 +546,9 @@ The ECS project contains three samples in `assets/samples`. They live in the pro
 |---|---|---|
 | `SpriteSwarmDemo` | on a node in a Canvas, with a Sprite Frame | thousands of bouncing sprites in one draw call, a column-based system, a singleton |
 | `MeshSwarmDemo` | on a node in a 3D scene | thousands of instanced cubes, a `forEach` system, `setEuler` |
-| `BakingDemo` | `SubScene` with a sprite + `SpinAuthoring`, and a node with `SpawnerAuthoring` (Prefab: a sprite) | authoring components, bakers, entity prefabs, command buffers |
+| `SpinAuthoring` + `SpawnerAuthoring` | `SubScene` with a sprite + `SpinAuthoring`, and a node with `SpawnerAuthoring` (Prefab: a sprite) | authoring components, bakers, entity prefabs, command buffers |
+
+Cocos allows **one Component class per script**: put each authoring component (with its baker and systems) in its own file.
 
 ## Limitations
 

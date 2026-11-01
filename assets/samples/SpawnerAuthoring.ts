@@ -1,57 +1,15 @@
 /**
- * Sample: the authoring workflow. Build the scene with ordinary nodes and
- * components; a SubScene turns them into entities when the game runs.
- *
- *   Canvas
- *   └─ SubScene                 (Add Component > ECS > SubScene)
- *      ├─ Logo                  Sprite + SpinAuthoring
- *      └─ Spawner               SpawnerAuthoring (Prefab: a node with a Sprite,
- *                               optionally SpinAuthoring)
- *
- * Bakers turn SpinAuthoring / SpawnerAuthoring into the Spin / Spawner
- * components below; the Sprite becomes a RenderSprite (built-in baker).
+ * Sample (baking, part 2): a spawner baked from SpawnerAuthoring. Its Prefab
+ * is baked once into an entity prefab, then instantiated without nodes
+ * through a command buffer. Setup: see SpinAuthoring.ts.
+ * (One Component class per script: Cocos requires it.)
  */
 import { _decorator, CCInteger, Component, Prefab } from 'cc';
 import {
-    Baker, EndSimulationEntityCommandBufferSystem, LocalToWorld, LocalTransform, SystemBase, baker, component, entity, f32, getAngle,
-    i32, setAngle, system,
+    Baker, EndSimulationEntityCommandBufferSystem, LocalToWorld, LocalTransform, SystemBase, baker, component, entity, f32, i32, system,
 } from 'db://ecs/index';
 
 const { ccclass, property, menu } = _decorator;
-
-// ------------------------------------------------------------------ spinning
-
-@component('Spin')
-export class Spin {
-    /** Degrees per second. */
-    @f32 speed = 90;
-}
-
-@ccclass('SpinAuthoring')
-@menu('ECS/Samples/SpinAuthoring')
-export class SpinAuthoring extends Component {
-    @property({ tooltip: 'Degrees per second.' })
-    speed = 90;
-}
-
-@baker(SpinAuthoring)
-export class SpinBaker extends Baker<SpinAuthoring> {
-    bake(a: SpinAuthoring) {
-        this.addComponent(Spin, { speed: a.speed });
-    }
-}
-
-@system({ name: 'SpinSystem' })
-export class SpinSystem extends SystemBase {
-    private q = this.query(LocalTransform, Spin);
-
-    protected onUpdate(): void {
-        const dt = this.time.deltaTime;
-        this.q.forEach((e, t, s) => setAngle(t, getAngle(t) + s.speed * dt));
-    }
-}
-
-// ------------------------------------------------------------------ spawning
 
 @component('Spawner')
 export class Spawner {

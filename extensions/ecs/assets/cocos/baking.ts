@@ -22,7 +22,7 @@
 import {
     _decorator, assetManager, Color, Component, instantiate, Material, MeshRenderer, Node, Prefab as CCPrefab, Sprite, UIMeshRenderer, UITransform,
 } from 'cc';
-import { EcsUIRenderer } from './batch';
+import { EcsUIRenderer } from './ui-renderer';
 import { ComponentClass, ComponentType, ComponentValues } from '../core/component';
 import { Disabled, LinkedEntityGroup, Prefab } from '../core/builtin';
 import type { Entity } from '../core/entity';
