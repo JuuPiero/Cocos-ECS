@@ -246,7 +246,7 @@ export function bakeNodes(world: World, roots: Node[], options: BakeOptions = {}
             }
         }
     }
-    const entities = [...nodeToEntity.values(), ...ctx.extra];
+    const entities = [...Array.from(nodeToEntity.values()), ...ctx.extra];
     if (options.prefab) {
         for (const e of entities) em.addComponent(e, Prefab);
         if (roots.length) {
@@ -330,7 +330,7 @@ export class SubScene extends Component {
         // Sprites baked here, or in the prefabs the bakers will instantiate.
         const groups = prefabs.map((p) => (em.hasComponent(p, LinkedEntityGroup) ? (em.getComponent(p, LinkedEntityGroup).entities as Entity[]) : [p]));
         const needsSprites = [entities, ...groups].some((list) => list.some((e) => em.exists(e) && em.hasComponent(e, RenderSprite)));
-        const hasRenderer = [...EntitySpriteRenderer.all].some((r) => r.layer === 0) || !!this.getComponent(EntitySpriteRenderer);
+        const hasRenderer = Array.from(EntitySpriteRenderer.all).some((r) => r.layer === 0) || !!this.getComponent(EntitySpriteRenderer);
         if (needsSprites && !hasRenderer) {
             const r = this.addComponent(EntitySpriteRenderer);
             if (r && this.spriteMaterial) r.setSharedMaterial(this.spriteMaterial, 0);

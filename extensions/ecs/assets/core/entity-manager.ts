@@ -54,7 +54,7 @@ export class EntityManager implements QueryHost {
 
     /** The archetype for exactly these component types (created on demand). */
     archetypeOf(types: TypeArg[]): Archetype {
-        const list = [...new Set(types.map(typeOf))];
+        const list = Array.from(new Set(types.map(typeOf)));
         const key = archetypeKey(list);
         let a = this.byKey.get(key);
         if (!a) {

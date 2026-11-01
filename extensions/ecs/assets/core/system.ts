@@ -110,7 +110,7 @@ export abstract class SystemBase {
 
     /** Every query this system made (debug). */
     get queries(): EntityQuery[] {
-        return [...this._queries.values()];
+        return Array.from(this._queries.values());
     }
 
     protected onCreate(): void {}
@@ -256,7 +256,7 @@ export class ComponentSystemGroup extends SystemBase {
         while (out.length < n) {
             let pick = -1;
             for (let i = 0; i < n; i++) {
-                if (done.has(i) || [...after[i]].some((j) => !done.has(j))) continue;
+                if (done.has(i) || Array.from(after[i]).some((j) => !done.has(j))) continue;
                 if (pick < 0 || rank(list[i]) < rank(list[pick])) pick = i;
             }
             if (pick < 0) {
