@@ -297,7 +297,17 @@ export class FixedStepSimulationSystemGroup extends ComponentSystemGroup {
     timestep = 1 / 60;
     /** Most fixed steps in one frame (avoids a spiral after a hitch). */
     maxSteps = 4;
+    /** Fixed steps run so far (a simulation tick counter). */
+    tickCount = 0;
     private accumulator = 0;
+
+    /**
+     * How far the frame is between the last step and the next one (0..1).
+     * Presentation interpolates with it: shown = lerp(previous, current, interpolation).
+     */
+    get interpolation(): number {
+        return this.timestep > 0 ? Math.min(1, this.accumulator / this.timestep) : 0;
+    }
 
     protected onUpdate(): void {
         const t = this.world.time;
@@ -308,6 +318,7 @@ export class FixedStepSimulationSystemGroup extends ComponentSystemGroup {
             while (this.accumulator >= this.timestep) {
                 this.accumulator -= this.timestep;
                 t.deltaTime = this.timestep;
+                this.tickCount++;
                 super.onUpdate();
             }
         } finally {

@@ -206,7 +206,7 @@ export class MoveSystem extends SystemBase {
 - **`enabled = false`** stops a system. You can also untick it in the Entities window.
 - **`requireForUpdate(T or query)`**: `onUpdate` runs only while every required query has entities. A system without requirements always runs.
 - **`@disableAutoCreation`** keeps a system out of the default world. Add it yourself with `world.addSystem(MySystem)`.
-- **`FixedStepSimulationSystemGroup`** updates its systems zero or more times a frame with `deltaTime = timestep` (1/60 by default, at most `maxSteps` = 4 steps a frame). Put physics-like systems there with `group: FixedStepSimulationSystemGroup`.
+- **`FixedStepSimulationSystemGroup`** updates its systems zero or more times a frame with `deltaTime = timestep` (1/60 by default, at most `maxSteps` = 4 steps a frame). Put physics-like systems there with `group: FixedStepSimulationSystemGroup`. `tickCount` counts the steps, and `interpolation` (0..1) tells how far the frame is between two steps: presentation code uses it to draw smoothly at any frame rate.
 - **Slow motion and pause**: `world.time.timeScale = 0.5`, or `0` to pause. The window's **Pause** button does the same.
 
 **Your own worlds** (tests, tools, a server simulation) are updated by hand:
