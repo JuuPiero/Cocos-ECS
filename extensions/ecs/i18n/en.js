@@ -1,1 +1,7 @@
-"use strict";module.exports={open_panel:"Default Panel",send_to_panel:"Send message to Default Panel",description:"Extension with a panel based on Vue3.x"};
+"use strict";
+module.exports = {
+    description: "Entity Component System for Cocos Creator (Unity Entities style): worlds, systems, baking, batched rendering and an Entities debug window",
+    menu: {
+        entities: "ECS Entities",
+    },
+};

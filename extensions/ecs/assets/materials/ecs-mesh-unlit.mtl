@@ -1,0 +1,14 @@
+{
+  "__type__": "cc.Material",
+  "_name": "ecs-mesh-unlit",
+  "_objFlags": 0,
+  "_native": "",
+  "_effectAsset": {
+    "__uuid__": "b40852bd-2e73-472c-a654-250bc610af88",
+    "__expectedType__": "cc.EffectAsset"
+  },
+  "_techIdx": 1,
+  "_defines": [{},{}],
+  "_states": [{"rasterizerState":{},"depthStencilState":{},"blendState":{"targets":[{}]}},{"rasterizerState":{},"depthStencilState":{},"blendState":{"targets":[{}]}}],
+  "_props": [{},{}]
+}

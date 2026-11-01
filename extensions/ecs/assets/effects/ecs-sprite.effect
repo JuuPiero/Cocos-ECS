@@ -1,0 +1,86 @@
+// ECS sprites: batched quads with a texture and a vertex color (alpha
+// blended). "ui" draws like Canvas sprites (no depth test), "world" is depth
+// tested for 3D scenes.
+CCEffect %{
+  techniques:
+  - name: ui
+    passes:
+    - vert: sprite-vs:vert
+      frag: sprite-fs:frag
+      rasterizerState: &r1 { cullMode: none }
+      depthStencilState: &d1
+        depthTest: false
+        depthWrite: false
+      blendState: &b1
+        targets:
+        - blend: true
+          blendSrc: src_alpha
+          blendDst: one_minus_src_alpha
+          blendSrcAlpha: one
+          blendDstAlpha: one_minus_src_alpha
+      properties: &props
+        mainTexture: { value: white }
+        alphaThreshold: { value: 0.0, editor: { slide: true, range: [0, 1, 0.01] } }
+    - vert: sprite-vs:vert
+      frag: sprite-fs:frag
+      phase: deferred-forward
+      propertyIndex: 0
+      rasterizerState: *r1
+      depthStencilState: *d1
+      blendState: *b1
+  - name: world
+    passes:
+    - vert: sprite-vs:vert
+      frag: sprite-fs:frag
+      rasterizerState: *r1
+      depthStencilState: &d2
+        depthTest: true
+        depthWrite: false
+      blendState: *b1
+      properties: *props
+    - vert: sprite-vs:vert
+      frag: sprite-fs:frag
+      phase: deferred-forward
+      propertyIndex: 0
+      rasterizerState: *r1
+      depthStencilState: *d2
+      blendState: *b1
+}%
+
+CCProgram sprite-vs %{
+  precision highp float;
+  #include <builtin/uniforms/cc-global>
+  #include <builtin/uniforms/cc-local>
+
+  in vec3 a_position;
+  in vec2 a_texCoord;
+  in vec4 a_color;
+
+  out vec2 v_uv;
+  out vec4 v_color;
+
+  vec4 vert () {
+    v_uv = a_texCoord;
+    v_color = a_color;
+    return cc_matProj * (cc_matView * (cc_matWorld * vec4(a_position, 1.0)));
+  }
+}%
+
+CCProgram sprite-fs %{
+  precision highp float;
+
+  in vec2 v_uv;
+  in vec4 v_color;
+
+  uniform sampler2D mainTexture;
+
+  uniform Constant {
+    float alphaThreshold;
+  };
+
+  vec4 frag () {
+    vec4 o = texture(mainTexture, v_uv) * v_color;
+    if (o.a < alphaThreshold) discard;
+    return o;
+  }
+}%

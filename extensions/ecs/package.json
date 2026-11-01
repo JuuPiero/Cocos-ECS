@@ -7,56 +7,70 @@
     "editor": ">=3.8.6",
     "scripts": {
         "preinstall": "node ./scripts/preinstall.js",
-        "build": "npx tsc"
+        "build": "tsc && node ./scripts/build.js",
+        "watch": "node ./scripts/build.js --watch",
+        "typecheck": "tsc",
+        "test": "node ./tests/run.js",
+        "preview": "node ./tests/preview/build.js"
     },
     "description": "i18n:ecs.description",
     "main": "./dist/main.js",
     "dependencies": {
         "vue": "^3.1.4",
-        "fs-extra": "^10.0.0"
+        "ws": "^8.18.0"
     },
     "devDependencies": {
         "@cocos/creator-types": "^3.8.6",
-        "@types/fs-extra": "^9.0.5",
         "@types/node": "^18.17.1",
+        "@types/ws": "^8.5.13",
+        "esbuild": "^0.24.2",
         "typescript": "^5.8.2"
     },
     "panels": {
         "default": {
-            "title": "ecs Default Panel",
+            "title": "ECS Entities",
             "type": "dockable",
             "main": "dist/panels/default",
+            "icon": "./static/icon.png",
             "size": {
-                "min-width": 400,
-                "min-height": 300,
-                "width": 1024,
-                "height": 600
+                "min-width": 360,
+                "min-height": 240,
+                "width": 820,
+                "height": 560
             }
         }
     },
     "contributions": {
+        "asset-db": {
+            "mount": {
+                "path": "./assets",
+                "readonly": false
+            }
+        },
         "menu": [
             {
-                "path": "i18n:menu.panel/ecs",
-                "label": "i18n:ecs.open_panel",
+                "path": "i18n:menu.panel",
+                "label": "i18n:ecs.menu.entities",
                 "message": "open-panel"
             },
             {
-                "path": "i18n:menu.develop/ecs",
-                "label": "i18n:ecs.send_to_panel",
-                "message": "send-to-panel"
+                "path": "i18n:menu.extension/ECS",
+                "label": "i18n:ecs.menu.entities",
+                "message": "open-panel"
             }
         ],
         "messages": {
             "open-panel": {
-                "methods": [
-                    "openPanel"
-                ]
+                "methods": ["openPanel"]
             },
-            "send-to-panel": {
-                "methods": [
-                    "default.hello"
-                ]
+            "debug-status": {
+                "methods": ["debugStatus"]
+            },
+            "debug-request": {
+                "methods": ["debugRequest"]
+            },
+            "set-lan": {
+                "methods": ["setLan"]
             }
         }
     }
